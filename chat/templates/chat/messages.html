@@ -1,0 +1,36 @@
+{% for message in messages %}
+    <div class="d-flex mb-4 {% if message.role == 'user' %}justify-content-end{% else %}justify-content-start{% endif %}">
+        <article class="card shadow-sm border-0" 
+                 style="max-width: 75%; border-radius: 16px;
+                        {% if message.role == 'user' %}
+                            background-color: #0284c7; color: #ffffff;
+                        {% else %}
+                            background-color: {% if request.user.profile.theme == 'oscuro' %}#27272a{% else %}#f1f5f9{% endif %};
+                            color: {% if request.user.profile.theme == 'oscuro' %}#f1f5f9{% else %}#0f172a{% endif %};
+                        {% endif %}">
+            
+            <div class="card-body p-3">
+                <header class="d-flex align-items-center gap-2 mb-1 small opacity-75 fw-bold">
+                    {% if message.role == 'user' %}
+                        <span>👤 {% if request.user.profile.alias %}{{ request.user.profile.alias|title }}{% else %}{{ request.user.username|title }}{% endif %}</span>
+                    {% else %}
+                        <span>🤖 Agente Inteligente</span>
+                    {% endif %}
+                </header>
+                
+                <p class="mb-1 style-content text-break" style="white-space: pre-wrap;">{{ message.content }}</p>
+
+                {% if message.role == 'assistant' %}
+                    {% include 'chat/feedback_buttons.html' %}
+                {% endif %}
+                <footer class="text-end small opacity-50" style="font-size: 0.75rem;">
+                    {{ message.created_at|date:"H:i" }}
+                </footer>
+            </div>
+        </article>
+    </div>
+{% empty %}
+    <div class="text-center py-5 opacity-50">
+        <p class="mb-0 fs-5">La sala de conversación está vacía. Envía un mensaje para comenzar.</p>
+    </div>
+{% endfor %}

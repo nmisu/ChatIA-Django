@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Ayuda y Documentación - ChatIA{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-5">
+    <div class="col-lg-8">
+        <h1 class="display-5 fw-bold mb-4 text-dark">Ayuda y Documentación</h1>
+        <p class="lead text-muted mb-5">Bienvenido a la página de información de ChatIA. Aquí encontrarás todos los detalles sobre el funcionamiento y la arquitectura del proyecto.</p>
+
+        <div class="card shadow-sm border-0 mb-4" style="border-radius: 12px;">
+            <div class="card-body p-4">
+                <h3 class="h4 fw-bold mb-3"> Funcionamiento de la aplicación</h3>
+                <p>ChatIA es un asistente conversacional diseñado para ofrecer respuestas rápidas y mantener el contexto de tus charlas. Para empezar a usarlo:</p>
+                <ol>
+                    <li><strong>Inicia sesión o Regístrate:</strong> Necesitas una cuenta para que tu historial se guarde de forma privada.</li>
+                    <li><strong>Crea un nuevo chat:</strong> Usa el botón de la página principal para abrir una sala.</li>
+                    <li><strong>Elige tu modelo:</strong> En la ventana de chat, selecciona qué IA quieres usar (desde modelos ultrarrápidos hasta razonadores complejos).</li>
+                    <li><strong>Gestiona tus datos:</strong> Puedes renombrar conversaciones, eliminarlas o descargar el historial completo en formato JSON usando el botón superior del chat.</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 mb-4" style="border-radius: 12px;">
+            <div class="card-body p-4">
+                <h3 class="h4 fw-bold mb-3"> Estructura Técnica</h3>
+                <p>Este proyecto se ha construido siguiendo el patrón Modelo-Vista-Plantilla (MVT) y utiliza las siguientes tecnologías:</p>
+                <ul>
+                    <li><strong>Backend:</strong> Desarrollado en Python 3 utilizando el framework <span class="badge bg-secondary">Django</span>.</li>
+                    <li><strong>Base de Datos:</strong> Almacenamiento relacional persistente mediante <span class="badge bg-secondary">SQLite3</span>.</li>
+                    <li><strong>Frontend y Reactividad:</strong> Maquetación responsive con Bootstrap 5 y actualizaciones asíncronas de la interfaz (sin recargar la página) gracias a <span class="badge bg-secondary">HTMX</span>.</li>
+                    <li><strong>Inteligencia Artificial:</strong> Integración mediante API REST con los servicios de inferencia de <span class="badge bg-secondary">NVIDIA NIM</span>, procesando payloads en formato JSON.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 mb-4" style="border-radius: 12px; border-left: 5px solid #212529 !important;">
+            <div class="card-body p-4">
+                <h3 class="h4 fw-bold mb-3"> Créditos del Equipo</h3>
+                <p class="mb-1">Proyecto final de la asignatura "Servicio de Aplicaciones en Redes de Ordenadores".</p>
+                <p class="mb-1"><strong>Desarrollado por:</strong> Amos-Nicolás Misu</p>
+                <p class="mb-0 text-muted small">Grado en Ingeniería en Sistemas de Telecomunicación • Universidad Rey Juan Carlos (URJC)</p>
+            </div>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

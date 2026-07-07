@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Modificar Título - ChatIA{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-5">
+    <div class="col-md-8 col-lg-6">
+        <section class="card p-4 shadow-sm border-0" style="border-radius: 15px;">
+            <h1 class="h3 mb-3 fw-bold text-dark">Editar nombre del chat</h1>
+            <p class="text-muted small mb-4">Introduce la nueva denominación identificativa para esta sesión de conversación.</p>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <input type="text" name="title" value="{{ conversation.title }}" class="form-control form-control-lg border-secondary-subtle" required placeholder="Título de la conversación">
+                </div>
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="{% url 'home' %}" class="btn btn-light px-4">Volver</a>
+                    <button type="submit" class="btn text-white px-4" style="background-color: #0284c7;">Actualizar</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+{% endblock %}

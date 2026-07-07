@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Chat Compartido - ChatIA{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+            <h2 class="h4 mb-0 text-dark">{{ conversation.title }}</h2>
+            <small class="text-muted">Propietario original: {{ owner.username|title }}</small>
+        </div>
+        <a href="{% url 'home' %}" class="btn btn-outline-secondary">Ir a mis chats</a>
+    </div>
+
+    <div class="chat-container mb-4">
+        {% for message in messages %}
+            <div class="mb-3 d-flex {% if message.role == 'user' %}justify-content-end{% else %}justify-content-start{% endif %}">
+                <div class="p-3 shadow-sm" style="max-width: 75%; border-radius: 15px; {% if message.role == 'user' %}background-color: #d1e7dd;{% else %}background-color: #f8f9fa;{% endif %}">
+                    <strong>{% if message.role == 'user' %}Humano{% else %}🤖 IA ({{ conversation.ai_model }}){% endif %}</strong>
+                    <p class="mb-0 mt-1" style="white-space: pre-wrap;">{{ message.content }}</p>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-muted text-center py-3">Esta conversación está vacía.</p>
+        {% endfor %}
+    </div>
+    
+    <div class="alert alert-info text-center">
+        ℹ️ Estás viendo una conversación compartida de forma temporal (Solo lectura).
+    </div>
+</div>
+{% endblock %}

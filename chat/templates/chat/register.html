@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrarse - ChatIA{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-5">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow border-0" style="border-radius: 15px;">
+            <div class="card-body p-5 text-center">
+                <h2 class="fw-bold mb-4 text-dark">Crear Cuenta</h2>
+                
+                <form method="POST" class="text-start">
+                    {% csrf_token %}
+                    
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small text-muted">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <div class="form-text small">{{ field.help_text }}</div>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                    
+                    <button type="submit" class="btn btn-dark w-100 mt-3 text-white fw-bold shadow-sm" style="border-radius: 8px;">
+                        Registrarse
+                    </button>
+                </form>
+                
+                <div class="mt-4 text-muted small">
+                    ¿Ya tienes una cuenta? <a href="{% url 'login' %}" class="text-dark" style="text-decoration: none; font-weight: bold;">Inicia sesión aquí</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Estilos extra para que los campos de Django se vean como Bootstrap */
+    input[type="text"], input[type="password"] {
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: var(--bs-body-color);
+        background-color: var(--bs-body-bg);
+        background-clip: padding-box;
+        border: var(--bs-border-width) solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}ChatIA{% endblock %}
+
+{% block content %}
+<div class="px-4 py-5 my-5 text-center">
+    <h1 class="display-4 fw-bold text-dark">Bienvenido a ChatIA</h1>
+    <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4 mt-3" style="color: {% if request.user.profile.theme == 'oscuro' %}#cbd5e1{% else %}#475569{% endif %};">
+            Tu asistente conversacional inteligente. Integra todo el poder de los modelos de <strong>NVIDIA NIM</strong> para responder a tus preguntas, mantener el contexto de tus charlas y guardar tu historial de forma segura.
+        </p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-5">
+            <a href="{% url 'login' %}" class="btn btn-dark btn-lg px-4 gap-3 shadow" style="border-radius: 10px;">
+                Iniciar Sesión
+            </a>
+            <a href="{% url 'register' %}" class="btn btn-outline-dark btn-lg px-4 gap-3 shadow-sm" style="border-radius: 10px;">
+                Registrarse
+            </a>
+            <a href="{% url 'help' %}" class="btn btn-link text-dark btn-lg px-4 text-decoration-none">
+                Saber más
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+    <div class="col d-flex align-items-start text-start">
+        <div>
+            <h3 class="fs-4"> IA Avanzada</h3>
+            <p class="text-muted">Conéctate a modelos como Llama 3.1 o Gemma 2 para obtener respuestas precisas al instante.</p>
+        </div>
+    </div>
+    <div class="col d-flex align-items-start text-start">
+        <div>
+            <h3 class="fs-4"> Historial Privado</h3>
+            <p class="text-muted">Tus conversaciones se guardan en tu cuenta. Retoma cualquier chat anterior cuando quieras.</p>
+        </div>
+    </div>
+    <div class="col d-flex align-items-start text-start">
+        <div>
+            <h3 class="fs-4"> Personalizable</h3>
+            <p class="text-muted">Ajusta el tema visual y tu alias desde el perfil para adaptar la aplicación a tu gusto.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Enlace generado - ChatIA{% endblock %}
+
+{% block content %}
+<div class="container py-5 text-center">
+    <div class="card shadow-sm border-0 mx-auto" style="max-width: 600px; border-radius: 12px;">
+        <div class="card-body p-5">
+            <h1 class="h3 mb-3 text-success">🔗 ¡Enlace generado con éxito!</h1>
+            <p class="text-muted mb-4">Comparte este enlace con otros usuarios de la plataforma. Solo podrán ver la conversación si tienen una cuenta y han iniciado sesión.</p>
+            
+            <div class="input-group mb-3">
+                <input type="text" class="form-control bg-light" id="shareUrl" value="{{ link_url }}" readonly>
+            </div>
+            
+            <p class="text-danger small mb-4"> Este enlace caducará el {{ expires_at|date:"d/m/Y H:i" }}.</p>
+            
+            <a href="{% url 'conversation_detail' chat.id %}" class="btn btn-outline-primary px-4">Volver al chat</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

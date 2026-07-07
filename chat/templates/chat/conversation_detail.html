@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Sala de Chat - ChatIA{% endblock %}
+
+{% block content %}
+<div class="py-2" style="max-width: 850px; margin: 0 auto;">
+    <header class="card p-3 mb-4 shadow-sm border-0 bg-white text-dark d-flex flex-row justify-content-between align-items-center">
+        <h1 class="h4 mb-0 fw-bold text-truncate" style="max-width: 60%;">{{ conversation.title }}</h1>
+        
+        <div>
+            <a href="{% url 'export_conversation_json' conversation.id %}" target="_blank" class="btn btn-outline-info btn-sm px-3 me-2">📥 JSON</a>
+            <a href="{% url 'generate_shared_link' conversation.id %}" class="btn btn-outline-success btn-sm px-3 me-2">🔗 Compartir</a>
+            <a href="{% url 'home' %}" class="btn btn-secondary btn-sm px-3">← Salir</a>
+        </div>
+    </header>
+
+    <section id="chat-window" class="p-3 mb-4 rounded border bg-white" style="height: 550px; overflow-y: auto; background-color: {% if request.user.profile.theme == 'oscuro' %}#18181b{% else %}#ffffff{% endif %};">
+        <div id="messages">
+            {% include 'chat/messages.html' %}
+        </div>
+    </section>
+
+    <footer class="chat-form-container">
+        <form hx-post="" hx-target="#messages" hx-swap="innerHTML" hx-on::after-request="this.querySelector('input[name=content]').value=''" method="POST">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label for="ia_model" class="form-label small fw-bold mb-1" style="color: {% if request.user.profile.theme == 'oscuro' %}#cbd5e1{% else %}#64748b{% endif %};">
+                    ⚙️ Elige el "cerebro" de la IA:
+                </label>
+                <select name="ia_model" class="form-select form-select-sm">
+                    <option value="google/gemma-2-2b-it" {% if conversation.ai_model == 'google/gemma-2-2b-it' %}selected{% endif %}>
+                        Gemma 2 (2B) - Ultra rápido
+                    </option>
+                    <option value="meta/llama-3.1-8b-instruct" {% if conversation.ai_model == 'meta/llama-3.1-8b-instruct' %}selected{% endif %}>
+                        Llama 3.1 (8B) - Equilibrado y estable
+                    </option>
+                    <option value="deepseek-ai/deepseek-v4-flash" {% if conversation.ai_model == 'deepseek-ai/deepseek-v4-flash' %}selected{% endif %}>
+                        DeepSeek V4 Flash - Optimizado y rápido
+                    </option>
+                    <option value="deepseek-ai/deepseek-v4-pro" {% if conversation.ai_model == 'deepseek-ai/deepseek-v4-pro' %}selected{% endif %}>
+                        DeepSeek V4 Pro - Razonamiento profundo
+                    </option>
+                </select>
+            </div>
+
+            <div class="input-group input-group-lg shadow-sm">
+                <input type="text" name="content" autocomplete="off" placeholder="Escribe tu consulta al asistente aquí..." class="form-control border-secondary-subtle" required>
+                <button type="submit" class="btn text-white px-4" style="background-color: #0284c7;">
+                    Enviar ➔
+                </button>
+            </div>
+        </form>
+    </footer>
+</div>
+
+<script>
+    // Auto-scroll al final del chat tras inyectar el código HTMX
+    document.body.addEventListener('htmx:afterSwap', function() {
+        setTimeout(function() {
+            var objDiv = document.getElementById("chat-window");
+            if(objDiv) {
+                objDiv.scrollTop = objDiv.scrollHeight;
+            }
+        }, 50);
+    });
+</script>
+{% endblock %}

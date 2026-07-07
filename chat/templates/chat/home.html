@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Principal - ChatIA{% endblock %}
+
+{% block content %}
+<div class="text-center py-4">
+    <h1 class="mb-4 fw-bold {% if request.user.profile.theme == 'oscuro' %}text-white{% else %}text-dark{% endif %}">CHAT IA</h1>
+    
+    <p class="lead" style="color: {% if request.user.profile.theme == 'oscuro' %}#e2e8f0{% else %}#212529{% endif %};">
+        ¡Hola 
+        {% if request.user.profile.alias and request.user.profile.alias != 'None' %}
+            <strong>{{ request.user.profile.alias|title }}</strong>
+        {% else %}
+            <strong>{{ user.username|title }}</strong>
+        {% endif %}!
+    </p>
+    
+    <div class="mb-4 mt-4">
+        <a href="{% url 'create_conversation' %}" class="btn {% if request.user.profile.theme == 'oscuro' %}btn-secondary{% else %}btn-dark{% endif %} text-white me-2 px-4 py-2 mb-2 shadow-sm">Nueva conversación</a>
+        
+        <a href="{% url 'profile' %}" class="btn {% if request.user.profile.theme == 'oscuro' %}btn-outline-light{% else %}btn-outline-dark{% endif %} px-4 py-2 mb-2 me-2">Mi Perfil</a>
+        
+        <a href="{% url 'compare_models' %}" class="btn btn-primary px-4 py-2 mb-2 shadow-sm"> Duelo de IAs</a>
+    </div>
+
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8">
+            <form method="GET" action="{% url 'home' %}" class="d-flex">
+                <input type="text" name="q" class="form-control me-2 {% if request.user.profile.theme == 'oscuro' %}bg-dark text-white border-secondary{% endif %}" placeholder="🔍 Buscar por título o dentro de los mensajes..." value="{{ query }}">
+                <button type="submit" class="btn btn-outline-primary">Buscar</button>
+                {% if query %}
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary ms-2">Limpiar</a>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <div class="row text-start">
+        <div class="col-md-6 mb-4">
+            <h2 class="h5 mb-3 {% if request.user.profile.theme == 'oscuro' %}text-info{% else %}text-primary{% endif %}">💬 Chats Activos:</h2>
+            <div class="card p-3 shadow-sm border-0 {% if request.user.profile.theme == 'oscuro' %}bg-dark text-light border border-secondary{% endif %}" style="border-radius: 12px; min-height: 200px;">
+                {% for chat in active_chats %}
+                    <div class="d-flex align-items-center mb-2 pb-2 border-bottom border-secondary-subtle">
+                        <a href="{% url 'toggle_pin' chat.id %}" class="text-decoration-none me-2" title="Fijar/Desfijar">{% if chat.is_pinned %}📍{% else %}📌{% endif %}</a>
+                        <a href="{% url 'toggle_archive' chat.id %}" class="text-decoration-none me-2" title="Archivar">📦</a>
+                        <a href="{% url 'rename_conversation' chat.id %}" class="text-decoration-none me-2" title="Renombrar">✏️</a>
+                        <a href="{% url 'delete_conversation' chat.id %}" class="text-decoration-none me-3" title="Eliminar" onclick="return confirm('¿Seguro que quieres eliminar la conversación?')">🗑️</a>
+                        
+                        <a href="{% url 'conversation_detail' chat.id %}" class="text-decoration-none {% if request.user.profile.theme == 'oscuro' %}text-white{% else %}text-dark{% endif %} {% if chat.is_pinned %}fw-bold text-info{% endif %}">
+                            {{ chat.title }}
+                        </a>
+                    </div>
+                {% empty %}
+                    <p class="text-muted text-center py-3">No hay chats activos que coincidan.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <h2 class="h5 mb-3 text-secondary">📦 Archivados:</h2>
+            <div class="card p-3 shadow-sm border-0 {% if request.user.profile.theme == 'oscuro' %}bg-dark text-light opacity-75 border border-secondary{% else %}bg-light opacity-75{% endif %}" style="border-radius: 12px; min-height: 200px;">
+                {% for chat in archived_chats %}
+                    <div class="d-flex align-items-center mb-2 pb-2 border-bottom border-secondary-subtle">
+                        <a href="{% url 'toggle_archive' chat.id %}" class="text-decoration-none me-2" title="Desarchivar">⬆️</a>
+                        <a href="{% url 'delete_conversation' chat.id %}" class="text-decoration-none me-3" title="Eliminar" onclick="return confirm('¿Eliminar definitivamente?')">🗑️</a>
+                        <a href="{% url 'conversation_detail' chat.id %}" class="text-decoration-none text-secondary">
+                            {{ chat.title }}
+                        </a>
+                    </div>
+                {% empty %}
+                    <p class="text-muted text-center py-3">No tienes conversaciones archivadas.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

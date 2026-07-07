@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Configuración de Perfil - ChatIA{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-5">
+    <div class="col-md-6 col-lg-5">
+        <section class="card shadow border-0 p-4" style="background-color: {% if request.user.profile.theme == 'oscuro' %}#18181b{% else %}#ffffff{% endif %}; border-radius: 15px;">
+            <h1 class="h3 mb-4 fw-bold text-center" style="color: #000000;">Ajustes de Cuenta</h1>
+            
+            <form method="POST" class="needs-validation">
+                {% csrf_token %}
+                
+                <div class="mb-3 text-start">
+                    <label for="id_alias" class="form-label fw-medium" style="color: {% if request.user.profile.theme == 'oscuro' %}#e2e8f0{% else %}#212529{% endif %};">Tu Pseudónimo / Alias</label>
+                    <input type="text" id="id_alias" name="alias" value="{{ profile.alias }}" placeholder="Ej. DesarrolladorWeb" class="form-control bg-light border-0">
+                </div>
+
+                <div class="mb-4 text-start">
+                    <label for="id_theme" class="form-label fw-medium" style="color: {% if request.user.profile.theme == 'oscuro' %}#e2e8f0{% else %}#212529{% endif %};">Tema de Interfaz</label>
+                    <select id="id_theme" name="theme" class="form-select bg-light border-0">
+                        <option value="claro" {% if request.user.profile.theme != 'oscuro' %}selected{% endif %}>Modo Claro</option>
+                        <option value="oscuro" {% if request.user.profile.theme == 'oscuro' %}selected{% endif %}>Modo Oscuro</option>
+                    </select>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn text-white btn-lg fs-6 shadow-sm" style="background-color: #0284c7;">Aplicar Cambios</button>
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary">Cancelar</a>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+{% endblock %}

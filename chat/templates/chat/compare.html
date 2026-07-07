@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}Comparador de Modelos{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">⚖️ Duelo de Inteligencias</h2>
+    
+    <div class="card shadow-sm border-0 mb-4 p-4">
+        <form hx-post="{% url 'compare_models' %}" hx-target="#results-area" hx-indicator="#loading-spinner">
+            {% csrf_token %}
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="model_1" class="form-label fw-bold text-primary">Esquina Azul (Modelo 1):</label>
+                    <select class="form-select border-primary" id="model_1" name="model_1">
+                        <option value="google/gemma-2-2b-it" selected>Gemma 2 (2B) - Ultra rápido</option>
+                        <option value="meta/llama-3.1-8b-instruct">Llama 3.1 (8B) - Equilibrado y estable</option>
+                        <option value="deepseek-ai/deepseek-v4-flash">DeepSeek V4 Flash - Optimizado y rápido</option>
+                        <option value="deepseek-ai/deepseek-v4-pro">DeepSeek V4 Pro - Razonamiento profundo</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="model_2" class="form-label fw-bold text-success">Esquina Roja (Modelo 2):</label>
+                    <select class="form-select border-success" id="model_2" name="model_2">
+                        <option value="google/gemma-2-2b-it">Gemma 2 (2B) - Ultra rápido</option>
+                        <option value="meta/llama-3.1-8b-instruct" selected>Llama 3.1 (8B) - Equilibrado y estable</option>
+                        <option value="deepseek-ai/deepseek-v4-flash">DeepSeek V4 Flash - Optimizado y rápido</option>
+                        <option value="deepseek-ai/deepseek-v4-pro">DeepSeek V4 Pro - Razonamiento profundo</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="prompt" class="form-label fw-bold">Escribe un prompt para probar en ambos modelos:</label>
+                <textarea class="form-control" id="prompt" name="prompt" rows="3" required placeholder="Ej: Explica qué es el efecto Doppler en una frase sencilla."></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-dark w-100 fw-bold">Iniciar Duelo 🚀</button>
+        </form>
+    </div>
+
+    <div id="loading-spinner" class="htmx-indicator text-center my-4" style="display: none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p class="mt-2 text-muted fw-bold">Consultando a los modelos en paralelo...</p>
+    </div>
+
+    <div id="results-area"></div>
+</div>
+
+<style>
+    .htmx-request#loading-spinner {
+        display: block !important;
+    }
+    .htmx-request.htmx-indicator {
+        display: block !important;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<script>
+    // Escuchamos el evento de HTMX que se dispara justo después de inyectar HTML
+    document.body.addEventListener('htmx:afterSwap', function(evt) {
+        // Nos aseguramos de que lo que se acaba de actualizar es la zona de resultados
+        if (evt.detail.target.id === 'results-area') {
+            
+            const markdownElements = document.querySelectorAll('.markdown-content');
+            
+            markdownElements.forEach(function(element) {
+                // Extraemos el texto en bruto
+                const rawText = element.textContent || element.innerText;
+                
+                // Lo parseamos a HTML bonito y lo sobrescribimos
+                element.innerHTML = marked.parse(rawText);
+            });
+        }
+    });
+</script>
+{% endblock %}

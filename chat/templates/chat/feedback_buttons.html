@@ -1,0 +1,12 @@
+<div id="feedback-{{ message.id }}" class="mt-2 pt-2 border-top border-secondary-subtle d-flex gap-2">
+    <button hx-post="{% url 'rate_message' message.id 'like' %}" 
+            hx-target="#feedback-{{ message.id }}" hx-swap="outerHTML" 
+            class="btn btn-sm {% if message.feedback == 1 %}text-success fw-bold{% else %}text-muted{% endif %}" title="Me gusta">
+        👍 {% if message.feedback == 1 %}1{% endif %}
+    </button>
+    <button hx-post="{% url 'rate_message' message.id 'dislike' %}" 
+            hx-target="#feedback-{{ message.id }}" hx-swap="outerHTML" 
+            class="btn btn-sm {% if message.feedback == -1 %}text-danger fw-bold{% else %}text-muted{% endif %}" title="No me gusta">
+        👎 {% if message.feedback == -1 %}1{% endif %}
+    </button>
+</div>
